@@ -9,6 +9,8 @@ const authorization = require('../middlewares/auth');
 const validateName = require('../middlewares/validateName');
 const validateAge = require('../middlewares/validateAge');
 const validateTalk = require('../middlewares/validateTalk');
+const validateWatchedAt = require('../middlewares/validateWatchedAt');
+const validateRate = require('../middlewares/validateRate');
 
 const app = express();
 app.use(bodyParser.json());
@@ -28,16 +30,6 @@ const readFile = async () => {
     console.error(`Arquivo não pôde ser lido: ${error}`);
   }
 };
-
-const writeFile = async () => {
-  try {
-    const data = await fs.writeFile(talkerPath);
-    return JSON.parse(data);
-  } catch (error) {
-    console.error(`Arquivo não pôde ser lido: ${error}`);
-  }
-};
-
 
 // não remova esse endpoint, e para o avaliador funcionar
 app.get('/', (_request, response) => {
@@ -81,6 +73,8 @@ authorization,
 validateName,
 validateAge,
 validateTalk,
+validateWatchedAt,
+validateRate,
 async (req, res) => {
 const talker = await readFile();
 const { name, age, talk } = req.body;
@@ -89,7 +83,7 @@ const { name, age, talk } = req.body;
     name,
     age,
     talk,
-  }
+  };
   const allTalkers = JSON.stringify([...talker, newTalker]);
     await fs.writeFile(talkerPath, allTalkers);
     res.status(201).json(newTalker);
@@ -100,6 +94,8 @@ authorization,
 validateName,
 validateAge,
 validateTalk,
+validateWatchedAt,
+validateRate,
 async (req, res) => {
 const { id } = req.params;
 const { name, age, talk } = req.body;
