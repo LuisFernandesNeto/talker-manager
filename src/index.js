@@ -3,6 +3,8 @@ const bodyParser = require('body-parser');
 const fs = require('fs').promises;
 const path = require('path');
 const generateToken = require('../utils/generateToken');
+const validateEmail = require('../middlewares/validateEmail');
+const validatePassword = require('../middlewares/validatePassword');
 
 const app = express();
 app.use(bodyParser.json());
@@ -48,7 +50,7 @@ app.get('/talker/:id', async (req, res) => {
     return res.status(404).send({ message: 'Pessoa palestrante não encontrada' });
  });
 
- app.post('/login', (req, res) => {
+ app.post('/login', validateEmail, validatePassword, (req, res) => {
   const { email, password } = req.body;
 
   if ([email, password].includes(undefined)) {
