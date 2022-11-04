@@ -37,3 +37,11 @@ app.get('/talker', async (req, res) => {
   }
     return res.status(200).json(talker);
 });
+
+app.get('/talker/:id', async (req, res) => {
+  const talker = await readFile();
+  const talk = talker.find(({ id }) => id === Number(req.params.id));
+  if(talk) return res.status(200).json(talk);
+   
+    return res.status(404).send({ message: "Pessoa palestrante não encontrada" });
+ });
