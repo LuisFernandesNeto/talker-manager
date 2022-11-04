@@ -40,6 +40,18 @@ app.listen(PORT, () => {
   console.log('Online');
 });
 
+app.get('/talker/search', authorization, async (req, res) => {
+  const talker = await readFile();
+  const { q } = req.query;
+  if (!q) {
+    return res.status(200).json(talker);
+  }
+  if (q) {
+    const filtered = talker.filter((element) => element.name.includes(q));
+    return res.status(200).json(filtered);
+  }
+});
+
 app.get('/talker', async (req, res) => {
   const talker = await readFile();
   if (talker === undefined) {
