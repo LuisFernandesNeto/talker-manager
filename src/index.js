@@ -2,6 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const fs = require('fs').promises;
 const path = require('path');
+const generateToken = require('../utils/generateToken');
 
 const app = express();
 app.use(bodyParser.json());
@@ -10,6 +11,7 @@ const HTTP_OK_STATUS = 200;
 const PORT = '3000';
 
 const array = [];
+
 const talkerPath = path.resolve(__dirname, './talker.json');
 
 const readFile = async () => {
@@ -45,3 +47,15 @@ app.get('/talker/:id', async (req, res) => {
    
     return res.status(404).send({ message: 'Pessoa palestrante não encontrada' });
  });
+
+ app.post('/login', (req, res) => {
+  const { email, password } = req.body;
+
+  if ([email, password].includes(undefined)) {
+      return res.status(401).json({ message: 'Campos ausentes!' });
+  }
+
+  const token = generateToken();
+
+  return res.status(200).json({ token });
+});
