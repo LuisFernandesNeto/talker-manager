@@ -106,3 +106,12 @@ talker[index] = { id: Number(id), name, age, talk };
     await fs.writeFile(talkerPath, allTalkers);
     res.status(200).json(talker[index]);
 });
+
+app.delete('/talker/:id', authorization, async (req, res) => {
+  const { id } = req.params;
+  const talker = await readFile();
+  const updatedTalkers = talker.filter((element) => element.id !== Number(id));
+  const allTalkers = JSON.stringify(updatedTalkers);
+  await fs.writeFile(talkerPath, allTalkers);
+  res.status(204).json();
+});
