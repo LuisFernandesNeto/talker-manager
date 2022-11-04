@@ -32,8 +32,8 @@ app.listen(PORT, () => {
 
 app.get('/talker', async (req, res) => {
   const talker = await readFile();
-  if(talker === undefined) {
-    return array
+  if (talker === undefined) {
+    return array;
   }
     return res.status(200).json(talker);
 });
@@ -41,7 +41,7 @@ app.get('/talker', async (req, res) => {
 app.get('/talker/:id', async (req, res) => {
   const talker = await readFile();
   const talk = talker.find(({ id }) => id === Number(req.params.id));
-  if(talk) return res.status(200).json(talk);
+  if (talk) return res.status(200).json(talk);
    
-    return res.status(404).send({ message: "Pessoa palestrante não encontrada" });
+    return res.status(404).send({ message: 'Pessoa palestrante não encontrada' });
  });
